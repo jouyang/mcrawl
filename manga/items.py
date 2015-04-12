@@ -11,4 +11,11 @@ import scrapy
 class MangaItem(scrapy.Item):
     # define the fields for your item here like:
     # name = scrapy.Field()
-    pass
+    title = scrapy.Field()
+    og_name = scrapy.Field()
+    tags = scrapy.Field()
+    author = scrapy.Field()
+    author_url = scrapy.Field()
+    cover = scrapy.Field()
+    hits = scrapy.Field()
+
