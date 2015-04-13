@@ -7,12 +7,12 @@ from manga.items import MangaItem
 
 class mangaSpider(CrawlSpider):
     name = "manga"
-    allowed_domains = ["manhua.dmzj.com"]
-    start_urls = ["manhua.dmzj.com"]
+    allowed_domains = ['manhua.dmzj.com']
+    start_urls = ["http://manhua.dmzj.com"]
 
     rules = (
-        Rule(LinkExtractor(allow=("http://manhua.dmzj.com/tags/*+"),deny=())),
-        Rule(LinkExtractor(allow=("http://manhua.dmzj.com/*+"),deny=()), callback='parse_item')
+        # Rule(LinkExtractor(allow=("http://manhua.dmzj.com/tags/*+"))),
+        Rule(LinkExtractor(allow=("http://manhua.dmzj.com/*+",)), callback='parse_item')
     )
 
     def parse_item(self, response):
