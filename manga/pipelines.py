@@ -9,10 +9,12 @@ import json
 
 class MangaPipeline(object):
 
-	def __init__(self):
-		self.file = open("result.json", 'wb')
-
 	def process_item(self, item, spider):
-		line = json.dumps(dict(item))+"\n"
-		self.file.write(line)
+		if item["author"]:
+			item["author"] = item["author"][0].strip()
+		if item["title"]:
+			item["title"] = item["title"][0].strip()
+		if item["cover"]:
+			item["cover"] = item["cover"][0].strip()
+
 		return item

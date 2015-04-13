@@ -12,14 +12,18 @@ class mangaSpider(CrawlSpider):
 
     rules = (
         # Rule(LinkExtractor(allow=("http://manhua.dmzj.com/tags/*+"))),
-        Rule(LinkExtractor(allow=("http://manhua.dmzj.com/*+",)), callback='parse_item')
+        Rule(LinkExtractor(allow=("http:\/\/manhua\.dmzj\.com\/\w+\/$",), deny=("http:\/\/manhua\.dmzj\.com\/update.*")), callback='parse_item'),
+        Rule(LinkExtractor(allow=("http:\/\/manhua\.dmzj\.com\/tags\/.+", "http:\/\/manhua\.dmzj\.com\/update.*")))
     )
 
     def parse_item(self, response):
         item = MangaItem()
 
-        manga_attr = response.xpath("//table/tr/td")      
-        item['tag'] = []
+        manga_attr = response.xpath("//table/tr/td")
+        if len(manga_attr) == 0:
+            return []
+
+        item['tags'] = []
 
         #title
         item['title'] = response.css(".odd_anim_title_m").xpath(".//h1/text()").extract()
@@ -32,15 +36,15 @@ class mangaSpider(CrawlSpider):
         #author
         item['author'] = manga_attr[2].xpath("./a/text()").extract()
         #area tag
-        item['tag'] += manga_attr[3].xpath("./a/text()").extract()
+        item['tags'] += manga_attr[3].xpath("./a/text()").extract()
         #status tag
-        item['tag'] += manga_attr[4].xpath("./a/text()").extract()
+        item['tags'] += manga_attr[4].xpath("./a/text()").extract()
         #hits
         item['hits'] = manga_attr[5].xpath("./a/text()").extract()
         #type tag
-        item['tag'] += manga_attr[6].xpath("./a/text()").extract()
+        item['tags'] += manga_attr[6].xpath("./a/text()").extract()
         #category tag
-        item['tag'] += manga_attr[7].xpath("./a/text()").extract()
+        item['tags'] += manga_attr[7].xpath("./a/text()").extract()
         #cover
         item['cover'] = response.css("div.anim_intro_ptext > a > img::attr(src)").extract()
 
@@ -57,8 +61,6 @@ class mangaSpider(CrawlSpider):
             return req
         else:
             return item
-
-        return item
 
     def parse_item2(self, response):
         item = response.meta['item']

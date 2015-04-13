@@ -18,4 +18,6 @@ class MangaItem(scrapy.Item):
     author_url = scrapy.Field()
     cover = scrapy.Field()
     hits = scrapy.Field()
+    synonym = scrapy.Field()
+    chapters = scrapy.Field()
 
